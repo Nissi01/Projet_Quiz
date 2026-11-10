@@ -4,6 +4,7 @@ import com.studyquiz.user.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
@@ -18,6 +19,10 @@ class ForumControllerTest {
     private User author, outsider, admin;
     private ForumThread thread;
 
+    private static Jwt jwt(long userId) {
+        return Jwt.withTokenValue("token-" + userId).header("alg", "HS256").subject(String.valueOf(userId)).build();
+    }
+
     @BeforeEach void setup() {
         threads = mock(ForumThreadRepository.class);
         posts = mock(ForumPostRepository.class);
@@ -31,31 +36,35 @@ class ForumControllerTest {
     }
 
     @Test void anotherUserCannotUpdateThread() {
-        when(current.require(2L)).thenReturn(outsider);
+        Jwt jwt2 = jwt(2L);
+        when(current.require(jwt2)).thenReturn(outsider);
         ResponseStatusException ex = assertThrows(ResponseStatusException.class, () ->
-                controller.update(50L, new ForumController.CreateThread("Nouveau", "Texte"), 2L));
+                controller.update(50L, new ForumController.CreateThread("Nouveau", "Texte"), jwt2));
         assertEquals(HttpStatus.FORBIDDEN, ex.getStatusCode());
         verify(threads, never()).save(any());
     }
 
     @Test void anotherUserCannotDeleteThread() {
-        when(current.require(2L)).thenReturn(outsider);
-        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> controller.delete(50L, 2L));
+        Jwt jwt2 = jwt(2L);
+        when(current.require(jwt2)).thenReturn(outsider);
+        ResponseStatusException ex = assertThrows(ResponseStatusException.class, () -> controller.delete(50L, jwt2));
         assertEquals(HttpStatus.FORBIDDEN, ex.getStatusCode());
         verify(threads, never()).delete(any());
     }
 
     @Test void authorCanUpdateThread() {
-        when(current.require(1L)).thenReturn(author);
+        Jwt jwt1 = jwt(1L);
+        when(current.require(jwt1)).thenReturn(author);
         when(threads.save(any(ForumThread.class))).thenAnswer(inv -> inv.getArgument(0));
-        ForumController.ThreadView updated = controller.update(50L, new ForumController.CreateThread("Nouveau", "Texte mis à jour"), 1L);
+        ForumController.ThreadView updated = controller.update(50L, new ForumController.CreateThread("Nouveau", "Texte mis à jour"), jwt1);
         assertEquals("Nouveau", updated.title());
         verify(threads).save(thread);
     }
 
     @Test void adminCanDeleteThread() {
-        when(current.require(3L)).thenReturn(admin);
-        assertEquals(HttpStatus.NO_CONTENT, controller.delete(50L, 3L).getStatusCode());
+        Jwt jwt3 = jwt(3L);
+        when(current.require(jwt3)).thenReturn(admin);
+        assertEquals(HttpStatus.NO_CONTENT, controller.delete(50L, jwt3).getStatusCode());
         verify(threads).delete(thread);
     }
 

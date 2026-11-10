@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -29,6 +30,8 @@ class QuizControllerHttpTest {
         mvc = MockMvcBuilders.standaloneSetup(new QuizController(service, current))
                 .setControllerAdvice(new ApiExceptionHandler())
                 .setValidator(validator)
+                // Résout @AuthenticationPrincipal Jwt (null ici : requêtes anonymes).
+                .setCustomArgumentResolvers(new AuthenticationPrincipalArgumentResolver())
                 .build();
     }
 

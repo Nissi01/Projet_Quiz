@@ -15,12 +15,13 @@ Les tests fournis sont **unitaires** (Mockito), ainsi que des tests HTTP **stand
 - `src/test/java/com/studyquiz/quiz/QuizServiceTest.java` : génération de 10 questions distinctes, réponses correctes/incorrectes, questions inconnues, doublons, deuxième soumission, utilisateur différent.
 - `src/test/java/com/studyquiz/quiz/QuizControllerHttpTest.java` : validation des tailles de quiz et traduction en codes HTTP 400/409.
 - `src/test/java/com/studyquiz/forum/ForumControllerTest.java` : contrôles d'auteur/admin pour modification/suppression, création sans identité.
-- `src/test/java/com/studyquiz/user/UserAuthorizationTest.java` : permissions métier pour rôle admin et absence d'utilisateur courant.
+- `src/test/java/com/studyquiz/user/UserAuthorizationTest.java` : permissions métier pour rôle admin, révocation des tokens au changement de rôle, JWT absent ou d'un utilisateur inconnu.
+- `src/test/java/com/studyquiz/user/JwtServiceTest.java` : émission/décodage du JWT (sub = id, claim `role`), rejet d'un token révoqué ou d'un utilisateur supprimé, secret trop court.
 - `src/test/java/com/studyquiz/quiz/ConcurrencyGapTest.java` : **désactivé intentionnellement** ; spécification du futur test avec deux transactions PostgreSQL.
 
 ## Limites de ces tests
 
-1. Le `CurrentUser` actuel fait confiance à un simple `X-User-Id` envoyé par le client. Les tests de rôle peuvent passer **alors que l'API est usurpable**. Corriger par Spring Security et ajouter des tests HTTP sans / avec JWT ou session valide.
+1. L'authentification passe désormais par Spring Security + JWT (`Authorization: Bearer …`), `CurrentUser` résout l'utilisateur depuis le claim `sub`. Les tests contrôleur injectent directement un `Jwt` ; les règles d'accès de `SecurityConfig` (endpoints publics / authentifiés / admin) ne sont pas encore couvertes par un test HTTP avec la chaîne de filtres complète (`@WebMvcTest` + `spring-security-test`).
 2. Le test de concurrence réel n'est **pas fait**. Une vérification valide requiert 2 connexions/transactions indépendantes sur PostgreSQL et un verrouillage ou `@Version` sur la session. `@Transactional` à lui seul ne protège pas une double soumission concurrente.
 3. Il faudra ensuite ajouter des tests d'intégration JPA/Flyway/Testcontainers pour vérifier requêtes SQL, cascade et intégrité des contraintes.
 4. Les tests ont été écrits à partir du ZIP fourni ; **je n'ai pas pu les exécuter ici** (Gradle et JDK 25 non disponibles dans cet environnement). Exécuter `gradle test` sur ton Mac et partager toute erreur éventuelle.
@@ -32,5 +33,5 @@ Copiez le contenu de `src/test/java/com/studyquiz/` fourni dans votre projet, sa
 ## Pour la suite
 
 - Construire un test PostgreSQL/Testcontainers de soumission concurrente (2 transactions réelles) et faire échouer le second appel de manière déterministe.
-- Installer Spring Security : authentification réelle et contrôles sur les endpoints du forum et des rôles.
+- Ajouter des tests HTTP avec la chaîne Spring Security (`@WebMvcTest` + `spring-security-test`) : 401 sans token, 403 sur `PATCH /api/users/{id}/role` pour un non-admin, login/logout.
 - Renforcer la validation des entrées de soumission (par exemple `@NotEmpty` sur les réponses et validation de la taille du quiz côté service, indépendamment du controller).
