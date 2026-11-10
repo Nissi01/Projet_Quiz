@@ -5,4 +5,5 @@ import java.util.*;
 public interface QuizSessionRepository extends JpaRepository<QuizSession,UUID> {
     @Query("select distinct s from QuizSession s left join fetch s.questions where s.id = :id")
     Optional<QuizSession> findWithQuestions(@Param("id") UUID id);
+    List<QuizSession> findByUserIdAndCompletedAtIsNotNullOrderByCompletedAtDesc(Long userId);
 }

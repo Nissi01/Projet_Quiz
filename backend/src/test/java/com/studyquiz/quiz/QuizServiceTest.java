@@ -13,16 +13,16 @@ class QuizServiceTest {
         when(subjects.existsById(1L)).thenReturn(true);
         when(questions.findIds(1L)).thenReturn(List.of(1L));
         QuizService service=new QuizService(subjects,questions,sessions);
-        assertThrows(ResponseStatusException.class,()->service.start(new StartQuizRequest(1L,2)));
+        assertThrows(ResponseStatusException.class,()->service.start(new StartQuizRequest(1L,2),null));
     }
     @Test void rejectsDuplicateAnswers(){
         SubjectRepository subjects=mock(SubjectRepository.class);
         QuestionRepository questions=mock(QuestionRepository.class);
         QuizSessionRepository sessions=mock(QuizSessionRepository.class);
-        Question q=new Question(new Subject("Algo"),"Question","Explanation");q.id=1L;
-        QuizSession session=new QuizSession(List.of(q));
+        Question q=new Question(new Subject(new Filiere("Info"),"Algo"),"Question","Explanation");q.id=1L;
+        QuizSession session=new QuizSession(List.of(q),null);
         when(sessions.findWithQuestions(session.id)).thenReturn(Optional.of(session));
         QuizService service=new QuizService(subjects,questions,sessions);
-        assertThrows(ResponseStatusException.class,()->service.submit(session.id,new SubmitRequest(List.of(new AnswerInput(1L,"A"),new AnswerInput(1L,"B")))));
+        assertThrows(ResponseStatusException.class,()->service.submit(session.id,new SubmitRequest(List.of(new AnswerInput(1L,"A"),new AnswerInput(1L,"B"))),null));
     }
 }

@@ -13,12 +13,15 @@ import java.util.*;
 public class CsvQuestionImporter implements ApplicationRunner {
     private final boolean enabled;
     private final Resource file;
+    /** Filière utilisée quand le CSV n'a pas de colonne "Filiere". */
+    static final String DEFAULT_FILIERE="Général";
+    private final FiliereRepository filieres;
     private final SubjectRepository subjects;
     private final QuestionRepository questions;
     private final TransactionTemplate transactions;
     public CsvQuestionImporter(@Value("${app.import.enabled}") boolean enabled,@Value("${app.import.location}") Resource file,
-                               SubjectRepository subjects,QuestionRepository questions,TransactionTemplate transactions){
-        this.enabled=enabled;this.file=file;this.subjects=subjects;this.questions=questions;this.transactions=transactions;
+                               FiliereRepository filieres,SubjectRepository subjects,QuestionRepository questions,TransactionTemplate transactions){
+        this.enabled=enabled;this.file=file;this.filieres=filieres;this.subjects=subjects;this.questions=questions;this.transactions=transactions;
     }
     @Override public void run(ApplicationArguments args) throws IOException {
         if(!enabled)return;
@@ -35,7 +38,11 @@ public class CsvQuestionImporter implements ApplicationRunner {
             String subjectName=value(r,"Matiere"),prompt=value(r,"Question"),explanation=value(r,"Explication");
             String correct=value(r,"Reponse_Correcte");
             if(!Set.of("Option_A","Option_B","Option_C","Option_D").contains(correct)) throw new IllegalArgumentException("Invalid correct option");
-            Subject subject=subjects.findByName(subjectName).orElseGet(()->subjects.save(new Subject(subjectName)));
+            String filiereName=r.isMapped("Filiere") && !r.get("Filiere").isBlank() ? r.get("Filiere").trim() : DEFAULT_FILIERE;
+            Subject subject=subjects.findByName(subjectName).orElseGet(()->{
+                Filiere filiere=filieres.findByName(filiereName).orElseGet(()->filieres.save(new Filiere(filiereName)));
+                return subjects.save(new Subject(filiere,subjectName));
+            });
             if(questions.existsBySubjectIdAndPrompt(subject.id,prompt))return;
             Question q=new Question(subject,prompt,explanation);
             for(String code:List.of("A","B","C","D"))q.addOption(code,value(r,"Option_"+code),correct.equals("Option_"+code));
