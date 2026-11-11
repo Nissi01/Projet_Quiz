@@ -9,7 +9,7 @@ function QuizPage() {
   // ce qui s'affiche à l'écran
   return (
     <div>
-      
+      <h1>Quiz</h1>;
     </div>
   );
 }
