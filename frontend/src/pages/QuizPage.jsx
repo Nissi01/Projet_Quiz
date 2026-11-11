@@ -1,4 +1,4 @@
-function Quiz() {
+function QuizPage() {
     //n°question,func update n° question
     const [current, setCurrent] = useState(0); 
     // score,func update score
@@ -14,4 +14,4 @@ function Quiz() {
   );
 }
 
-export default Quiz;
+export default QuizPage;
