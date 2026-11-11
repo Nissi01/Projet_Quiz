@@ -14,6 +14,7 @@ CREATE TABLE users (
   password_hash VARCHAR(255) NOT NULL,
   role user_role NOT NULL DEFAULT 'user',
   is_public BOOLEAN NOT NULL DEFAULT TRUE,
+  token_version INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
