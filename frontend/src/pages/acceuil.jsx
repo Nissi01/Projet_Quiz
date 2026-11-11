@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { getRestants, UtiliserUnquizz } from "../service/invite.js";
+import { getRestants, UtiliserUnquizz } from "../services/invite.js";
 
 // Fonction séparée : elle reçoit "naviguer" en paramètre
 function essayez(naviguer) {
