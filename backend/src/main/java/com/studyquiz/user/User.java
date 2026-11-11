@@ -12,8 +12,11 @@ public class User {
     @Enumerated(EnumType.STRING) @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(nullable=false,columnDefinition="user_role") public UserRole role=UserRole.user;
     @Column(name="is_public",nullable=false) public boolean isPublic=true;
+    /** Incrémenté pour révoquer tous les JWT déjà émis (déconnexion, changement de rôle). */
+    @Column(name="token_version",nullable=false) public int tokenVersion=0;
     @Column(name="created_at",nullable=false) public Instant createdAt=Instant.now();
     protected User() {}
     public User(String username,String email,String passwordHash){this.username=username;this.email=email;this.passwordHash=passwordHash;}
     public boolean isAdmin(){return role==UserRole.admin;}
+    public void revokeTokens(){tokenVersion++;}
 }

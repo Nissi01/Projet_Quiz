@@ -1,5 +1,7 @@
 package com.studyquiz.forum;
 import com.studyquiz.user.CurrentUser;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import com.studyquiz.user.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -21,25 +23,25 @@ public class ForumController {
     @GetMapping public Page<ThreadView> threads(@RequestParam(defaultValue="0") int page){
         return threads.findAll(PageRequest.of(Math.max(page,0),20,Sort.by(Sort.Direction.DESC,"createdAt"))).map(this::view);
     }
-    @PostMapping public ResponseEntity<ThreadView> create(@Valid @RequestBody CreateThread req,@RequestHeader(name=CurrentUser.HEADER,required=false) Long userId){
-        return ResponseEntity.status(HttpStatus.CREATED).body(view(threads.save(new ForumThread(current.require(userId),req.title(),req.body()))));
+    @PostMapping public ResponseEntity<ThreadView> create(@Valid @RequestBody CreateThread req,@AuthenticationPrincipal Jwt jwt){
+        return ResponseEntity.status(HttpStatus.CREATED).body(view(threads.save(new ForumThread(current.require(jwt),req.title(),req.body()))));
     }
     @GetMapping("/{id}") public ThreadView thread(@PathVariable Long id){return view(findThread(id));}
-    @PutMapping("/{id}") public ThreadView update(@PathVariable Long id,@Valid @RequestBody CreateThread req,@RequestHeader(name=CurrentUser.HEADER,required=false) Long userId){
-        ForumThread t=ownedThread(id,current.require(userId));
+    @PutMapping("/{id}") public ThreadView update(@PathVariable Long id,@Valid @RequestBody CreateThread req,@AuthenticationPrincipal Jwt jwt){
+        ForumThread t=ownedThread(id,current.require(jwt));
         t.title=req.title();t.body=req.body();
         return view(threads.save(t));
     }
-    @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable Long id,@RequestHeader(name=CurrentUser.HEADER,required=false) Long userId){
-        threads.delete(ownedThread(id,current.require(userId)));
+    @DeleteMapping("/{id}") public ResponseEntity<Void> delete(@PathVariable Long id,@AuthenticationPrincipal Jwt jwt){
+        threads.delete(ownedThread(id,current.require(jwt)));
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/{id}/posts") public Page<PostView> posts(@PathVariable Long id,@RequestParam(defaultValue="0") int page){
         findThread(id);
         return posts.findByThreadId(id,PageRequest.of(Math.max(page,0),20,Sort.by("createdAt"))).map(p->view(p,id));
     }
-    @PostMapping("/{id}/posts") public ResponseEntity<PostView> reply(@PathVariable Long id,@Valid @RequestBody CreatePost req,@RequestHeader(name=CurrentUser.HEADER,required=false) Long userId){
-        User user=current.require(userId);
+    @PostMapping("/{id}/posts") public ResponseEntity<PostView> reply(@PathVariable Long id,@Valid @RequestBody CreatePost req,@AuthenticationPrincipal Jwt jwt){
+        User user=current.require(jwt);
         return ResponseEntity.status(HttpStatus.CREATED).body(view(posts.save(new ForumPost(findThread(id),user,req.body())),id));
     }
     private ForumThread findThread(Long id){return threads.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Thread not found"));}

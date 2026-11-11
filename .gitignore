@@ -20,6 +20,7 @@ application-local.yaml
 secrets.yml
 .env
 .env.*
+!.env.example
 
 # ==========================================
 # Maven
