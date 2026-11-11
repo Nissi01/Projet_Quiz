@@ -1,0 +1,11 @@
+﻿Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+Programmation,"En Python, quelle fonction permet d'afficher du texte dans le terminal ?",print(),echo(),display(),show(),Option_A,"En Python c'est print() ."
+Programmation,"En Java, quelle instruction permet d'afficher une ligne de texte dans la console ?",print(),echo(),System.out.println(),Console.WriteLine(),Option_C,"En Java, c'est System.out.println()."
+Programmation,"En JavaScript, quelle instruction permet d'afficher un message dans la console du navigateur ?",print(),console.log(),System.out.println(),echo(),Option_B,console.log() affiche un message dans la console des outils de développement du navigateur.
+Programmation,"En langage C, quelle fonction de la bibliothèque standard permet d'afficher du texte dans le terminal ?",echo(),print(),cout,printf(),Option_D,"En C, printf() (de la bibliothèque stdio.h)"
+Programmation,"En Python, quel symbole permet d'écrire un commentaire sur une seule ligne ?",//,#,--,/* */,Option_B,"En Python, tout ce qui suit le symbole # est un commentaire."
+Programmation,"En Java, quel mot-clé permet de déclarer une constante, c'est-à-dire une variable dont la valeur ne peut plus changer ?",final,let,static,readonly,Option_A,"En Java, final empêche de modifier la valeur d'une variable après son initialisation."
+Programmation,"En Python, quelle fonction renvoie le nombre d'éléments d'une liste ?",size(),length(),len(),count(),Option_C,"len() renvoie le nombre d'éléments d'une liste."
+Programmation,Quelle structure de contrôle répète un bloc de code tant qu'une condition est vraie ?,if,switch,def,while,Option_D,"La boucle while répète son bloc d'instructions tant que sa condition reste vraie."
+Programmation,"En Python, quel mot-clé permet de définir une fonction ?",function,def,fun,define,Option_B,"En Python, on définit une fonction avec le mot-clé def."
+Programmation,"En SQL, quelle commande permet de lire des données dans une table ?",SELECT,GET,READ,OPEN,Option_A,"SELECT permet de lire les données d'une table"

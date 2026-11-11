@@ -1,0 +1,11 @@
+﻿Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+Programmation,"En SQL, quelle commande permet d'ajouter une ligne dans une table ?",ADD,INSERT,PUT,APPEND,Option_B,INSERT ajoute une ligne dans une table
+Programmation,"En SQL, quelle commande permet de supprimer des lignes d'une table ?",DELETE,REMOVE,ERASE,CUT,Option_A,DELETE supprime des lignes d'une table
+Programmation,"En SQL, quelle clause permet de filtrer les lignes d'une requête ?",FILTER,IF,WHERE,FIND,Option_C,WHERE filtre les lignes selon une condition
+Programmation,"En SQL, quelle commande permet de modifier des lignes existantes ?",CHANGE,EDIT,ALTER,UPDATE,Option_D,UPDATE modifie des lignes existantes
+Programmation,"En PHP, quelle instruction permet d'afficher du texte ?",echo,console.log,println,cout,Option_A,echo affiche du texte en PHP
+Programmation,"En PHP, par quel symbole commence le nom d'une variable ?",@,#,$,&,Option_C,"Une variable PHP commence par $"
+Programmation,"En PHP, quel opérateur permet de concaténer deux chaînes ?",+,.,&,||,Option_B,"Le point colle deux chaînes, par exemple ""a"" . ""b"""
+Programmation,"Avec Git, quelle commande crée un commit ?",git save,git push,git add,git commit,Option_D,git commit enregistre tes changements dans l'historique
+Programmation,"Avec Git, quelle commande envoie tes commits sur le dépôt distant ?",git send,git push,git pull,git upload,Option_B,git push envoie tes commits sur le dépôt distant
+Programmation,"Avec Git, quelle commande copie un dépôt distant sur ta machine ?",git copy,git download,git clone,git fork,Option_C,git clone copie un dépôt distant en local
