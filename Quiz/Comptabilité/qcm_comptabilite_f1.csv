@@ -1,0 +1,11 @@
+﻿Matiere(Manon Landelle),Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+Comptabilité,En combien de classes le PCG est-il réparti ?,5,8,12,20,Option_B,"8 classes (1-5 : bilan, 6-7 : gestion, 8 : spéciaux)."
+Comptabilité,Laquelle de ces propositions n'est PAS un principe comptable ?,Prudence,Permanence des méthodes,Indépendance des exercices,Maximisation du profit,Option_D,"La maximisation du profit est un objectif économique, pas un principe comptable."
+Comptabilité,Enregistre-t-on les remises lors d'une facture d'achat ?,Non (seul le net commercial compte),"Oui, en charges","Oui, en produits",Seulement au-delà de 10 %,Option_A,Les RRR sur facture initiale ne s'enregistrent jamais.
+Comptabilité,Quels sont les types d'apports au capital ?,"Numéraire, nature, industrie","Espèces, emprunt, subvention","Actions, obligations, dividendes","Actif, passif, trésorerie",Option_A,"Numéraire (argent), nature (biens) et industrie (savoir-faire)."
+Comptabilité,Qu'est-ce que le compte 78 au compte de résultat ?,Ventes de marchandises,Reprises sur amortissements et provisions,Dotations aux amortissements,Charges d'intérêts,Option_B,Produit calculé qui annule une dotation antérieure (compte 68).
+Comptabilité,Quelles classes du PCG forment le compte de résultat ?,1 et 2,3 et 4,6 et 7,4 et 5,Option_C,Classe 6 (charges) et classe 7 (produits).
+Comptabilité,Comment traite-t-on l'escompte de règlement sur facture ?,Ignoré,Toujours comptabilisé (665 ou 765),Ajouté à la TVA,Mis en immobilisation,Option_B,"Réduction financière toujours enregistrée (765 acheteur, 665 vendeur)."
+Comptabilité,Quelle différence entre amortissement et dépréciation ?,Amortissement : irréversible / Dépréciation : réversible,Amortissement : réversible / Dépréciation : définitive,Aucune différence,Dépréciation = trésorerie uniquement,Option_A,"L'amortissement est définitif (usure), la dépréciation est réversible."
+Comptabilité,À quoi sert une facture d'avoir ?,Demander un acompte,Rembourser/réduire une facture initiale,Clôturer le bilan,Payer l'URSSAF,Option_B,Rectifie une facture suite à un retour ou rabais après-vente.
+Comptabilité,Où figure le capital social (compte 101) au bilan ?,Actif immobilisé,Actif circulant,Passif (capitaux propres),Passif (dettes fournisseurs),Option_C,"En haut du passif, dans les capitaux propres."

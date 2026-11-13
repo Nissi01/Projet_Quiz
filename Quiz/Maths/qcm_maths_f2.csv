@@ -1,4 +1,4 @@
-﻿Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+﻿Matiere(Dhia Ghodhbani),Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
 Mathématiques,Quelle est l'identité de Bézout pour deux entiers a et b ?,"au + bv = PPCM(a, b)","au + bv = PGCD(a, b)","a + b = PGCD(a, b)","au × bv = PGCD(a, b)",Option_B,"Il existe deux entiers u et v tels que au + bv = PGCD(a, b)"
 Mathématiques,Quand l'équation ax + by = c admet-elle des solutions entières ?,"Quand PGCD(a, b) divise c","Quand c divise PGCD(a, b)",Quand a et b sont premiers,Toujours,Option_A,"ax + by = c a des solutions entières si et seulement si PGCD(a, b) divise c"
 Mathématiques,"Quel célèbre mathématicien français est mort en 1832 à 20 ans, après un duel ?",Blaise Pascal,Joseph Fourier,Évariste Galois,Pierre de Fermat,Option_C,"Évariste Galois est mort en 1832 après un duel (cause exacte, amoureuse ou politique, débattue)"

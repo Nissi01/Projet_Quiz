@@ -1,4 +1,4 @@
-﻿Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+﻿Matiere(Yassine Najib),Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
 Génie civil,Qu'est-ce que le moment d'une force par rapport à un point ?,La force divisée par sa surface,Le poids total de la structure,La force multipliée par sa distance au point,La durée d'application de la force,Option_C,Moment = force × bras de levier. Il mesure la tendance à faire tourner ou fléchir
 Génie civil,"Pour une poutre sur deux appuis simples avec une charge uniforme, où le moment fléchissant est-il maximal ?",Sur les appuis,À mi-travée,À un quart de la portée,Il est constant partout,Option_B,Il est nul sur les appuis et maximal à mi-travée (qL²/8)
 Génie civil,Qu'est-ce qu'une structure hyperstatique ?,Elle a plus d'inconnues que d'équations d'équilibre,Elle a moins d'inconnues que d'équations d'équilibre,Elle n'a aucun appui,Elle ne subit aucune charge,Option_A,Les équations d'équilibre ne suffisent pas : il faut aussi tenir compte des déformations

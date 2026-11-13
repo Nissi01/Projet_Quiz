@@ -1,4 +1,4 @@
-﻿Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+﻿Matiere(Dhia Ghodhbani),Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
 Mathématiques,Dans quel contexte utilise-t-on l'algorithme d'Euclide ?,Pour calculer le PGCD de deux entiers,Pour résoudre un système linéaire,Pour dériver une fonction,Pour calculer un déterminant,Option_A,"On enchaîne des divisions euclidiennes jusqu'au dernier reste non nul, qui est le PGCD"
 Mathématiques,Que fournit l'algorithme d'Euclide étendu en plus du PGCD ?,Les diviseurs premiers de a et b,Les coefficients de Bézout u et v,Le PPCM uniquement,La décomposition en facteurs premiers,Option_B,"On obtient u et v tels que au + bv = PGCD(a, b)"
 Mathématiques,Comment démontrer qu'une application linéaire f est injective ?,Montrer que Im f = F,Montrer que f(0) = 0,Montrer que f est dérivable,Montrer que Ker f = {0},Option_D,Une application linéaire est injective si et seulement si son noyau est réduit à {0}

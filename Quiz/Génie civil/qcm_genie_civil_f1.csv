@@ -1,4 +1,4 @@
-﻿Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+﻿Matiere(Yassine Najib),Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
 Génie civil,Quelle est la différence entre le ciment et le béton ?,"Aucune, c'est le même produit","Le ciment est un liant, le béton est un mélange","Le béton est un liant, le ciment est un mélange","Le ciment est liquide, le béton est solide",Option_B,"Le ciment est la poudre qui lie. Le béton est un mélange de ciment, d'eau, de sable et de gravillons"
 Génie civil,"Dans un béton, quel composant joue le rôle de liant ?",Le sable,Les gravillons,Le ciment,L'acier,Option_C,"Le ciment, une fois mélangé à l'eau, durcit et lie les granulats entre eux"
 Génie civil,Quels sont les composants principaux du béton ?,"Ciment, eau, sable et gravillons","Ciment, eau et acier","Chaux, plâtre et sable","Ciment, argile et bitume",Option_A,"Béton = ciment + eau + granulats (sable et gravillons), parfois avec des adjuvants"

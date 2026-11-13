@@ -1,4 +1,4 @@
-﻿Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+﻿Matiere(Yassine Najib),Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
 Génie civil,Quelle est la différence entre une poutre et un poteau ?,"La poutre est verticale, le poteau est horizontal","La poutre est horizontale, le poteau est verticale","Aucune, c'est le même élément","La poutre est en bois, le poteau en acier",Option_B,"La poutre est horizontale et travaille en flexion, le poteau est vertical et travaille en compression"
 Génie civil,"Parmi ces éléments, lequel travaille surtout en compression ?",La poutre,La dalle,Le poteau,Le linteau,Option_C,Le poteau reprend les charges verticales et les descend vers les fondations
 Génie civil,"Quelle est la durée de vie d'un bâtiment courant, d'après les Eurocodes ?",10 ans,25 ans,50 ans,200 ans,Option_C,Les Eurocodes retiennent environ 50 ans pour un bâtiment courant
