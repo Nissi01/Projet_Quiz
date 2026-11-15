@@ -1,25 +1,14 @@
 import { useEffect, useState } from "react";
 import { getSubjects, startQuiz, submitQuiz } from "../services/quizService";
 
-/* ===== A ADAPTER avec QuizDtos.java (tout est regroupé ici) ===== */
-const subjectLabel = (s) => s.name ?? s.title ?? s.label;
-const questionText = (q) => q.text ?? q.statement ?? q.label;
-const optionText = (o) => o.text ?? o.label;
-const buildStartBody = (subjectId) => ({ subjectId, count: 5 });
-const buildSubmitBody = (questions, answers) => ({
-  answers: questions.map((q, i) => ({
-    questionId: q.id,
-    optionIds: answers[i] ?? [],
-  })),
-});
-/* ================================================================ */
+const NB_QUESTIONS = 5;
 
 function QuizPage() {
   const [subjects, setSubjects] = useState([]);
-  const [quiz, setQuiz] = useState(null);       // le quiz en cours
-  const [current, setCurrent] = useState(0);    // n° de la question
-  const [answers, setAnswers] = useState([]);   // réponses choisies par question
-  const [result, setResult] = useState(null);   // résultat renvoyé par le backend
+  const [quiz, setQuiz] = useState(null);      // { sessionId, questions }
+  const [current, setCurrent] = useState(0);
+  const [answers, setAnswers] = useState({});  // { [questionId]: "A" | "B" | "C" | "D" }
+  const [result, setResult] = useState(null);
   const [finished, setFinished] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,31 +19,31 @@ function QuizPage() {
   async function commencer(subjectId) {
     setError("");
     try {
-      const q = await startQuiz(buildStartBody(subjectId));
+      const q = await startQuiz({ subjectId, count: NB_QUESTIONS });
       setQuiz(q);
       setCurrent(0);
-      setAnswers([]);
+      setAnswers({});
       setResult(null);
       setFinished(false);
     } catch (e) {
-      setError("Impossible de démarrer le quiz : " + e.message);
+      setError(
+        e.message.includes("Not enough questions")
+          ? "Pas assez de questions pour ce sujet. Choisis-en un autre."
+          : "Impossible de démarrer le quiz : " + e.message
+      );
     }
   }
 
-  function toggle(optionId) {
-    setAnswers((prev) => {
-      const copie = [...prev];
-      const deja = copie[current] ?? [];
-      copie[current] = deja.includes(optionId)
-        ? deja.filter((id) => id !== optionId)
-        : [...deja, optionId];
-      return copie;
-    });
+  function choisir(questionId, code) {
+    setAnswers({ ...answers, [questionId]: code });
   }
 
   async function terminer() {
+    setError("");
     try {
-      const r = await submitQuiz(quiz.id, buildSubmitBody(quiz.questions, answers));
+      const r = await submitQuiz(quiz.sessionId, {
+        answers: quiz.questions.map((q) => ({ questionId: q.id, optionCode: answers[q.id] })),
+      });
       setResult(r);
       setFinished(true);
     } catch (e) {
@@ -68,19 +57,18 @@ function QuizPage() {
     setFinished(false);
   }
 
-  if (error && !quiz) {
-    return <p className="erreur">{error}</p>;
-  }
-
   // 1. Choix du sujet
   if (!quiz) {
     return (
-      <div>
-        <h1>Choisis un sujet</h1>
-        {subjects.length === 0 && <p>Aucun sujet disponible.</p>}
-        <div className="liste">
+      <div className="qcm">
+        <h2>Choisis un sujet</h2>
+        {error && <p className="erreur centre">{error}</p>}
+        <div className="liste" style={{ justifyContent: "center" }}>
+          <button onClick={() => commencer(null)}>Tous les sujets</button>
           {subjects.map((s) => (
-            <button key={s.id} onClick={() => commencer(s.id)}>{subjectLabel(s)}</button>
+            <button key={s.id} onClick={() => commencer(s.id)}>
+              {s.name} ({s.filiere})
+            </button>
           ))}
         </div>
       </div>
@@ -89,46 +77,67 @@ function QuizPage() {
 
   // 3. Résultat
   if (finished) {
-    const total = result?.total ?? quiz.questions.length;
+    const parId = Object.fromEntries(quiz.questions.map((q) => [q.id, q]));
     return (
-      <div className="carte">
-        <h1>Résultat</h1>
-        <p className="score">{result?.score} / {total}</p>
-        {result?.corrections && (
-          <details>
-            <summary>Voir les corrections</summary>
-            <pre>{JSON.stringify(result.corrections, null, 2)}</pre>
-          </details>
-        )}
-        <button onClick={recommencer}>Refaire un quiz</button>
+      <div className="qcm">
+        <h2>Ton score</h2>
+        <p className="score centre">{result.score} / {result.total}</p>
+        {result.corrections.map((c) => {
+          const q = parId[c.questionId];
+          const label = (code) => q.options.find((o) => o.code === code)?.label;
+          return (
+            <div key={c.questionId} className="carte">
+              <strong>{q.prompt}</strong>
+              {c.correct ? (
+                <p className="ok">Bonne réponse : {label(c.selectedCode)}</p>
+              ) : (
+                <>
+                  <p className="erreur">Ta réponse : {label(c.selectedCode)}</p>
+                  <p className="ok">Bonne réponse : {label(c.correctCode)}</p>
+                </>
+              )}
+              <small>{c.explanation}</small>
+            </div>
+          );
+        })}
+        <div className="suite">
+          <button onClick={recommencer}>Refaire un quiz</button>
+        </div>
       </div>
     );
   }
 
   // 2. Question en cours
   const question = quiz.questions[current];
-  const choisies = answers[current] ?? [];
+  const choisie = answers[question.id];
   const derniere = current === quiz.questions.length - 1;
+  const toutesRepondues = quiz.questions.every((q) => answers[q.id]);
 
   return (
-    <div className="carte">
-      <p>Question {current + 1} / {quiz.questions.length}</p>
-      <h2>{questionText(question)}</h2>
-      <div className="liste vertical">
-        {question.options.map((o) => (
-          <label key={o.id} className="option">
-            <input type="checkbox" checked={choisies.includes(o.id)}
-                   onChange={() => toggle(o.id)} />
-            {optionText(o)}
-          </label>
+    <div className="qcm">
+      <p className="progression">Question {current + 1} / {quiz.questions.length}</p>
+      <h2>{question.prompt}</h2>
+
+      <div className="reponses">
+        {question.options.map((o, i) => (
+          <button key={o.code}
+                  className={"reponse" + (choisie === o.code ? " choisie" : "")}
+                  onClick={() => choisir(question.id, o.code)}>
+            <span className="numero">{i + 1}</span>
+            {o.label}
+          </button>
         ))}
       </div>
-      {error && <p className="erreur">{error}</p>}
-      <div className="liste">
+
+      {error && <p className="erreur centre">{error}</p>}
+
+      <div className="suite">
         <button disabled={current === 0} onClick={() => setCurrent(current - 1)}>Précédent</button>
-        {derniere
-          ? <button onClick={terminer}>Terminer</button>
-          : <button onClick={() => setCurrent(current + 1)}>Suivant</button>}
+        {derniere ? (
+          <button disabled={!toutesRepondues} onClick={terminer}>Terminer</button>
+        ) : (
+          <button disabled={!choisie} onClick={() => setCurrent(current + 1)}>Suivant</button>
+        )}
       </div>
     </div>
   );

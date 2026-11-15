@@ -1,9 +1,9 @@
 import { request } from "./api";
 
-export async function login(email, password) {
+export async function login(identifiant, password) {
   const data = await request("/auth/login", {
     method: "POST",
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ login: identifiant, password }),
   });
   localStorage.setItem("token", data.token);
   return data;

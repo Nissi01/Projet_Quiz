@@ -227,3 +227,10 @@ button.reponse.estompee { opacity: .45; }
   padding: 0;
   border-radius: 50%;
 }
+button.reponse.choisie,
+button.reponse.choisie:hover:not(:disabled) {
+  border-color: var(--bonne);
+  box-shadow: 0 0 0 2px var(--bonne);
+}
+.ok { color: var(--bonne); margin: 0; }
+.suite { gap: 12px; }

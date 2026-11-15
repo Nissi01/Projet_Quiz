@@ -48,7 +48,7 @@ export default function Nav() {
     <nav className="nav">
       <Link to="/">Accueil</Link>
       <Link to={connecte ? "/quiz" : "/connexion"}>Quiz</Link>
-      {connecte && <Link to="/forum">Forum</Link>}
+      <Link to={connecte ? "/forum" : "/connexion"}>Forum</Link>
       <span className="espace" />
       <button
         className="theme"

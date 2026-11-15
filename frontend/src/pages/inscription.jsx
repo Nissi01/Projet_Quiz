@@ -17,7 +17,7 @@ function Inscription() {
     setLoading(true);
     try {
       await register(form);
-      navigate("/connexion");
+      navigate("/");
     } catch (err) {
       setError("Inscription impossible : " + err.message);
     } finally {
