@@ -12,6 +12,9 @@ export async function request(path, options = {}) {
     },
   });
 
-  if (!res.ok) throw new Error(`Erreur ${res.status}`);
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || `Erreur ${res.status}`);
+  }
   return res.json();
 }

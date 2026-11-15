@@ -35,7 +35,7 @@ function Accueil() {
 
     return (
         <div>
-            <h1>Bienvenue a question pour un Quizz</h1>
+            <h1>Bienvenue dans question pour un Quizz</h1>
             <button onClick={() => naviguer("/inscription")}>inscription</button>
             <button onClick={() => naviguer("/connexion")}>connexion</button>
             <Essai />
