@@ -47,7 +47,7 @@ export default function Nav() {
   return (
     <nav className="nav">
       <Link to="/">Accueil</Link>
-      <Link to="/quiz">Quiz</Link>
+      <Link to={connecte ? "/quiz" : "/connexion"}>Quiz</Link>
       {connecte && <Link to="/forum">Forum</Link>}
       <span className="espace" />
       <button
