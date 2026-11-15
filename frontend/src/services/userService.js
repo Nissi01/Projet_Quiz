@@ -5,7 +5,7 @@ export async function login(email, password) {
     method: "POST",
     body: JSON.stringify({ email, password }),
   });
-  localStorage.setItem("token", data.token); // à adapter selon la réponse
+  localStorage.setItem("token", data.token);
   return data;
 }
 
