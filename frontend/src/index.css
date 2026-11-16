@@ -234,3 +234,66 @@ button.reponse.choisie:hover:not(:disabled) {
 }
 .ok { color: var(--bonne); margin: 0; }
 .suite { gap: 12px; }
+
+select {
+  padding: 12px 14px;
+  border: 1px solid var(--bordure);
+  border-radius: 8px;
+  background: var(--champ);
+  color: var(--texte);
+  font: inherit;
+}
+
+/* les boutons radio ne doivent pas avoir le style des champs texte */
+input[type="radio"] {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  accent-color: var(--bonne);
+}
+.option-creation { display: flex; gap: 12px; align-items: center; }
+.option-creation input:not([type="radio"]) { flex: 1; }
+
+button.secondaire {
+  background: transparent;
+  color: var(--texte);
+  border: 1px solid var(--bordure);
+}
+button.secondaire:hover:not(:disabled) { background: transparent; border-color: var(--texte); }
+/* Forum */
+.forum-entete { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 8px; }
+.forum-entete h1 { margin: 0; }
+
+/* un lien qui ressemble à un bouton */
+a.bouton {
+  display: inline-block;
+  padding: 11px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-texte);
+  text-decoration: none;
+}
+a.bouton:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+a.bouton.secondaire { background: transparent; color: var(--texte); border-color: var(--bordure); }
+a.bouton.secondaire:hover { border-color: var(--texte); background: transparent; }
+
+a.sujet {
+  display: flex;
+  gap: 16px;
+  padding: 16px 20px;
+  margin: 12px 0;
+  background: var(--carte);
+  border: 1px solid var(--bordure);
+  border-radius: 12px;
+  color: var(--texte);
+  text-decoration: none;
+}
+a.sujet:hover { border-color: var(--texte); }
+.sujet h2 { font-size: 1.1rem; margin: 0 0 4px; }
+.sujet p { margin: 0 0 8px; color: var(--doux); }
+.stat { flex: none; display: flex; flex-direction: column; align-items: center; min-width: 64px; }
+.stat strong { font-size: 1.4rem; }
+textarea.grand { min-height: 180px; }
+.pagination { align-self: center; color: var(--doux); }

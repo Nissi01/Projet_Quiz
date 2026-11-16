@@ -5,6 +5,8 @@ import Connexion from "./pages/Connexion.jsx";
 import QuizPage from "./pages/QuizPage.jsx";
 import ForumPage from "./pages/ForumPage.jsx";
 import Nav from "./components/Nav.jsx";
+import ForumNouveau from "./pages/ForumNouveau.jsx";
+import ForumThread from "./pages/ForumThread.jsx";
 
 // Le forum n'est accessible que si on est connecté
 function Protege({ children }) {
@@ -22,6 +24,9 @@ function App() {
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/quiz" element={<Protege><QuizPage /></Protege>} />
           <Route path="/forum" element={<Protege><ForumPage /></Protege>} />
+          <Route path="/forum" element={<Protege><ForumPage /></Protege>} />
+          <Route path="/forum/nouveau" element={<Protege><ForumNouveau /></Protege>} />
+          <Route path="/forum/:id" element={<Protege><ForumThread /></Protege>} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </main>

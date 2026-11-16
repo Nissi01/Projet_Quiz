@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getSubjects, startQuiz, submitQuiz } from "../services/quizService";
+import CreerQuestion from "../components/CreerQuestion";
 
 const NB_QUESTIONS = 5;
 
@@ -11,6 +12,7 @@ function QuizPage() {
   const [result, setResult] = useState(null);
   const [finished, setFinished] = useState(false);
   const [error, setError] = useState("");
+  const [creation, setCreation] = useState(false);
 
   useEffect(() => {
     getSubjects().then(setSubjects).catch((e) => setError(e.message));
@@ -58,12 +60,20 @@ function QuizPage() {
   }
 
   // 1. Choix du sujet
+  if (creation) {
+    return <CreerQuestion subjects={subjects} onRetour={() => setCreation(false)} />;
+  }
   if (!quiz) {
     return (
       <div className="qcm">
         <h2>Choisis un sujet</h2>
         {error && <p className="erreur centre">{error}</p>}
         <div className="liste" style={{ justifyContent: "center" }}>
+        <div className="suite">
+          <button className="secondaire" onClick={() => setCreation(true)}>
+            Créer mon quiz
+          </button>
+        </div>
           <button onClick={() => commencer(null)}>Tous les sujets</button>
           {subjects.map((s) => (
             <button key={s.id} onClick={() => commencer(s.id)}>

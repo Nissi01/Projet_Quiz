@@ -7,3 +7,6 @@ export const startQuiz = (body) =>
 
 export const submitQuiz = (id, body) =>
   request(`/quizzes/${id}/submit`, { method: "POST", body: JSON.stringify(body) });
+
+export const createQuestion = (body) =>
+  request("/questions", { method: "POST", body: JSON.stringify(body) });

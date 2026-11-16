@@ -1,110 +1,50 @@
 import { useEffect, useState } from "react";
-import {
-  getThreads, getThread, createThread, deleteThread, getPosts, createPost,
-} from "../services/forumService";
-
-// Spring renvoie souvent une Page : { content: [...] }
-const liste = (d) => d?.content ?? d ?? [];
-// A ADAPTER avec ForumController (ThreadView / PostView)
-const auteur = (x) => x.authorName ?? x.author?.username ?? x.author ?? "";
+import { Link } from "react-router";
+import { getThreads } from "../services/forumService";
+import { liste, auteur, dateFr, extrait } from "./forumHelpers";
 
 function ForumPage() {
   const [threads, setThreads] = useState([]);
-  const [selected, setSelected] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [titre, setTitre] = useState("");
-  const [texte, setTexte] = useState("");
-  const [reponse, setReponse] = useState("");
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [error, setError] = useState("");
 
-  async function chargerThreads() {
-    try { setThreads(liste(await getThreads(0))); }
-    catch (e) { setError(e.message); }
-  }
-
-  useEffect(() => { chargerThreads(); }, []);
-
-  async function ouvrir(id) {
-    try {
-      setSelected(await getThread(id));
-      setPosts(liste(await getPosts(id, 0)));
-    } catch (e) { setError(e.message); }
-  }
-
-  async function nouveauThread(e) {
-    e.preventDefault();
-    try {
-      await createThread(titre, texte);
-      setTitre(""); setTexte("");
-      chargerThreads();
-    } catch (err) { setError(err.message); }
-  }
-
-  async function repondre(e) {
-    e.preventDefault();
-    try {
-      await createPost(selected.id, reponse);
-      setReponse("");
-      setPosts(liste(await getPosts(selected.id, 0)));
-    } catch (err) { setError(err.message); }
-  }
-
-  async function supprimer(id) {
-    try {
-      await deleteThread(id);
-      setSelected(null);
-      chargerThreads();
-    } catch (err) { setError("Suppression refusée : " + err.message); }
-  }
-
-  if (selected) {
-    return (
-      <div>
-        <button onClick={() => setSelected(null)}>← Retour au forum</button>
-        <h1>{selected.title}</h1>
-        <p>{selected.body}</p>
-        <small>{auteur(selected)}</small>
-        <button onClick={() => supprimer(selected.id)}>Supprimer</button>
-
-        <h2>Réponses</h2>
-        {posts.length === 0 && <p>Aucune réponse pour le moment.</p>}
-        {posts.map((p) => (
-          <div key={p.id} className="carte">
-            <p>{p.body}</p>
-            <small>{auteur(p)}</small>
-          </div>
-        ))}
-
-        <form className="carte" onSubmit={repondre}>
-          <textarea placeholder="Ta réponse" value={reponse}
-                    onChange={(e) => setReponse(e.target.value)} required />
-          <button type="submit">Répondre</button>
-        </form>
-        {error && <p className="erreur">{error}</p>}
-      </div>
-    );
-  }
+  useEffect(() => {
+    getThreads(page)
+      .then((data) => {
+        setThreads(liste(data));
+        setTotalPages(data?.totalPages ?? 1);
+      })
+      .catch((e) => setError(e.message));
+  }, [page]);
 
   return (
     <div>
-      <h1>Forum</h1>
+      <div className="forum-entete">
+        <h1>Forum</h1>
+        <Link to="/forum/nouveau" className="bouton">Poser une question</Link>
+      </div>
+
       {error && <p className="erreur">{error}</p>}
+      {!error && threads.length === 0 && <p>Aucune discussion pour le moment. Lance la première.</p>}
 
-      <form className="carte" onSubmit={nouveauThread}>
-        <input placeholder="Titre" value={titre}
-               onChange={(e) => setTitre(e.target.value)} required />
-        <textarea placeholder="Ta question ou ton message" value={texte}
-                  onChange={(e) => setTexte(e.target.value)} required />
-        <button type="submit">Publier</button>
-      </form>
-
-      {threads.length === 0 && <p>Aucune discussion. Lance la première.</p>}
       {threads.map((t) => (
-        <div key={t.id} className="carte clic" onClick={() => ouvrir(t.id)}>
-          <strong>{t.title}</strong>
-          <small>{auteur(t)}</small>
-        </div>
+        <Link key={t.id} to={`/forum/${t.id}`} className="sujet">
+          <div className="sujet-texte">
+            <h2>{t.title}</h2>
+            <p>{extrait(t.body)}</p>
+            <small>{auteur(t)} {t.createdAt && `· ${dateFr(t.createdAt)}`}</small>
+          </div>
+        </Link>
       ))}
+
+      {totalPages > 1 && (
+        <div className="suite">
+          <button className="secondaire" disabled={page === 0} onClick={() => setPage(page - 1)}>Précédent</button>
+          <span className="pagination">Page {page + 1} / {totalPages}</span>
+          <button className="secondaire" disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>Suivant</button>
+        </div>
+      )}
     </div>
   );
 }
