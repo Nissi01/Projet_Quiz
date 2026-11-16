@@ -23,7 +23,7 @@ openssl rand -base64 48   # pour JWT_SECRET
 ```
 En production, définis-les directement comme variables d'environnement (elles sont prioritaires sur `.env`).
 
-Variables optionnelles : `ADMIN_USERNAME` (`admin`), `ADMIN_EMAIL` (`admin@studyquiz.local`), `JWT_EXPIRATION` (`PT24H`), `DB_URL`, `DB_USER`, `DB_PASSWORD`, `CORS_ORIGIN` (`http://localhost:5173`), `IMPORT_SEED` (`true`).
+Variables optionnelles : `ADMIN_USERNAME` (`admin`), `ADMIN_EMAIL` (`admin@studyquiz.local`), `JWT_EXPIRATION` (`PT24H`), `DB_URL`, `DB_USER`, `DB_PASSWORD`, `CORS_ORIGIN` (`http://localhost:5173`), `IMPORT_SEED` (`true`), `QUIZ_DIR` (`../Quiz`).
 
 ## Lancer
 ```bash
@@ -31,7 +31,7 @@ cd backend
 docker compose up -d
 gradle bootRun
 ```
-L'API écoute sur `http://localhost:8080`. Au premier démarrage, Flyway crée le schéma, les questions de `questions.csv` sont importées et le compte admin est créé.
+L'API écoute sur `http://localhost:8080`. Au premier démarrage, Flyway crée le schéma, les questions des CSV du dossier `Quiz/` sont importées et le compte admin est créé.
 
 ## Authentification
 1. Créer un compte : `POST /api/users`
@@ -136,7 +136,12 @@ Une session ne peut être soumise qu'une fois, avec une réponse pour chaque que
 L'auteur est déduit du token : les réponses contiennent `userId` et `authorName`.
 
 ## Ajouter des questions par CSV
-Modifier `src/main/resources/questions.csv` (UTF-8, séparateur `;`), puis redémarrer. Colonnes : `Matiere;Question;Option_A;Option_B;Option_C;Option_D;Reponse_Correcte;Explication`, plus une colonne `Filiere` facultative (sinon la matière est rangée dans la filière « Général »). Une question déjà présente (même matière + même énoncé) n'est pas mise à jour.
+Ajouter ou modifier un fichier `.csv` dans le dossier `Quiz/` à la racine du dépôt (parcouru récursivement, chemin configurable avec `QUIZ_DIR`), puis redémarrer.
+
+- **Colonnes** : `Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication` (UTF-8, BOM accepté). Le séparateur `,` ou `;` est détecté automatiquement. Un commentaire entre parenthèses dans l'en-tête est ignoré, ex. `Matiere(Prénom Nom)`.
+- **Filière** : nom du premier sous-dossier de `Quiz/` (`Quiz/Informatique/Code/…` → « Informatique »). Une colonne `Filiere` facultative la remplace ; un fichier à la racine de `Quiz/` va dans « Général ».
+- **Difficulté** : suffixe du nom de fichier — `_d1` → `difficile`, `_f1`/`_f2` → `facile`, `_n1` → `normal`, `_b1` → `bebe` (par défaut si aucun suffixe).
+- Une question déjà présente (même matière + même énoncé) n'est pas mise à jour.
 
 En production : `IMPORT_SEED=false` pour désactiver l'import au démarrage.
 
@@ -155,7 +160,6 @@ backend/
     │   └── forum/        # discussions et réponses
     └── resources/
         ├── application.yml
-        ├── questions.csv
         └── db/migration/V1__schema.sql
 ```
 

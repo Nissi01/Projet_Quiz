@@ -29,4 +29,5 @@ app:
     password: ${ADMIN_PASSWORD}
   import:
     enabled: ${IMPORT_SEED:true}
-    location: classpath:questions.csv
+    # Dossier contenant les CSV de quiz (parcouru récursivement), relatif au dossier backend/.
+    location: ${QUIZ_DIR:../Quiz}
