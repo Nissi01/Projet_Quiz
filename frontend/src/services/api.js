@@ -13,6 +13,11 @@ export async function request(path, options = {}) {
   });
 
   if (!res.ok) {
+    // Jeton refusé : il est périmé, on l'oublie
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+    }
     const data = await res.json().catch(() => ({}));
     throw new Error(data.error || `Erreur ${res.status}`);
   }

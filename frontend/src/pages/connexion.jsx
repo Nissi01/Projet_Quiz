@@ -26,25 +26,26 @@ function Connexion() {
     const [erreur, setErreur] = useState("");
 
     return (
-        <div>
-            <h1>Connexion</h1>
+        <main>
+            <div className="carte">
+                <h1>Connexion</h1>
 
-            <form onSubmit={(e) => envoyer(e, identifiant, motDePasse, setErreur, naviguer)}>
-                <input type="text" placeholder="Email ou pseudo" value={identifiant}
-                    onChange={(e) => setIdentifiant(e.target.value)}
-                    required />
-                <br />
-                <input type="password" placeholder="Mot de passe" value={motDePasse}
-                    onChange={(e) => setMotDePasse(e.target.value)}
-                    required />
-                <br />
-                <button type="submit">Se connecter</button>
-            </form>
-            {erreur && <p style={{ color: "red" }}>{erreur}</p>}
+                <form className="carte" onSubmit={(e) => envoyer(e, identifiant, motDePasse, setErreur, naviguer)}>
+                    <input type="text" placeholder="Email ou pseudo" value={identifiant}
+                        onChange={(e) => setIdentifiant(e.target.value)}
+                        required />
+                    <input type="password" placeholder="Mot de passe" value={motDePasse}
+                        onChange={(e) => setMotDePasse(e.target.value)}
+                        required />
+                    <button type="submit">Se connecter</button>
+                </form>
 
-            <p>Pas encore de compte ? <Link to="/inscription">Créer un compte</Link></p>
-            <p><Link to="/">Retour à l'accueil</Link></p>
-        </div>
+                {erreur && <p className="erreur">{erreur}</p>}
+
+                <p>Pas encore de compte ? <Link to="/inscription">Créer un compte</Link></p>
+                <p><Link to="/">Retour à l'accueil</Link></p>
+            </div>
+        </main>
     );
 }
 

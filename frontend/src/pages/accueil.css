@@ -1,0 +1,30 @@
+/* Page d'accueil : tout centré, avec de l'espace */
+.accueil {
+    display: flex;
+    flex-direction: column;
+    /* les éléments s'empilent verticalement */
+    align-items: center;
+    /* centrés horizontalement */
+    text-align: center;
+    /* textes centrés */
+    gap: 40px;
+    /* espace entre chaque bloc */
+    padding-top: 80px;
+    /* espace en haut de la page */
+}
+
+/* Les boutons inscription / connexion, côte à côte */
+.accueil-boutons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    /* passent à la ligne sur petit écran */
+    justify-content: center;
+}
+
+/* Le bloc « Essayez le quiz », centré dans une carte */
+.accueil-essai {
+    align-items: center;
+    max-width: 420px;
+    width: 100%;
+}

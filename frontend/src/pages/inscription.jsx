@@ -32,30 +32,29 @@ function Inscription() {
     const [erreur, setErreur] = useState("");
 
     return (
-        <div>
-            <h1>Inscription</h1>
+        <main>
+            <div className="carte">
+                <h1>Inscription</h1>
 
-            <form onSubmit={(e) => envoyer(e, pseudo, email, motDePasse, setErreur, naviguer)}>
-                <input placeholder="Pseudo" value={pseudo}
-                    onChange={(e) => setPseudo(e.target.value)}
-                    required minLength={3} maxLength={80} />
-                <br />
-                <input type="email" placeholder="Email" value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required />
-                <br />
-                <input type="password" placeholder="Mot de passe (8 caractères minimum)" value={motDePasse}
-                    onChange={(e) => setMotDePasse(e.target.value)}
-                    required minLength={8} maxLength={72} />
-                <br />
-                <button type="submit">Créer mon compte</button>
-            </form>
-            {erreur && <p style={{ color: "red" }}>{erreur}</p>}
+                <form className="carte" onSubmit={(e) => envoyer(e, pseudo, email, motDePasse, setErreur, naviguer)}>
+                    <input placeholder="Pseudo" value={pseudo}
+                        onChange={(e) => setPseudo(e.target.value)}
+                        required minLength={3} maxLength={80} />
+                    <input type="email" placeholder="Email" value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required />
+                    <input type="password" placeholder="Mot de passe (8 caractères minimum)" value={motDePasse}
+                        onChange={(e) => setMotDePasse(e.target.value)}
+                        required minLength={8} maxLength={72} />
+                    <button type="submit">Créer mon compte</button>
+                </form>
 
-            <p>Déjà un compte ? <Link to="/connexion">Se connecter</Link></p>
-            <p><Link to="/">Retour à l'accueil</Link></p>
-        </div>
+                {erreur && <p className="erreur">{erreur}</p>}
+
+                <p>Déjà un compte ? <Link to="/connexion">Se connecter</Link></p>
+                <p><Link to="/">Retour à l'accueil</Link></p>
+            </div>
+        </main>
     );
 }
-
 export default Inscription;

@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router";
 import { getRestants, UtiliserUnquizz } from "../services/invite.js";
+import "./accueil.css";
 
 // Fonction séparée : elle reçoit "naviguer" en paramètre
 function essayez(naviguer) {
     UtiliserUnquizz();   // le compteur baisse
-    naviguer("/quiz");  // on va sur la page quiz
+    naviguer("/quiz");   // on va sur la page quiz
 }
 
 // Le bouton d'essai, ou le message quand il n'y a plus d'essais
@@ -14,7 +15,7 @@ function Essai() {
 
     if (restants > 0) {
         return (
-            <div>
+            <div className="carte accueil-essai">
                 <button onClick={() => essayez(naviguer)}>
                     Essayez tant que vous pouvez ({restants} restants)
                 </button>
@@ -23,7 +24,7 @@ function Essai() {
     }
 
     return (
-        <div>
+        <div className="carte accueil-essai">
             <p>Vous avez deja essayez 3 fois le quizz il faut maintenant s'inscrire!</p>
         </div>
     );
@@ -34,12 +35,16 @@ function Accueil() {
     const naviguer = useNavigate();
 
     return (
-        <div>
+        <main className="accueil">
             <h1>Bienvenue dans question pour un Quizz</h1>
-            <button onClick={() => naviguer("/inscription")}>inscription</button>
-            <button onClick={() => naviguer("/connexion")}>connexion</button>
+
+            <div className="accueil-boutons">
+                <button onClick={() => naviguer("/inscription")}>inscription</button>
+                <button onClick={() => naviguer("/connexion")}>connexion</button>
+            </div>
+
             <Essai />
-        </div>
+        </main>
     );
 }
 
