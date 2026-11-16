@@ -1,0 +1,11 @@
+﻿Matiere,Question,Option_A,Option_B,Option_C,Option_D,Reponse_Correcte,Explication
+Programmation,"En Python, que renvoie 7 // 2 ?",3.5,3,4,2,Option_B,// est la division entière : 7 // 2 vaut 3
+Programmation,"En Python, laquelle de ces structures n'est plus modifiable ?",list,dict,tuple,set,Option_C,Un tuple ne peut plus être modifié après sa création
+Programmation,"En Java, comment comparer le contenu de deux String ?",==,compare(),same(),equals(),Option_D,"== compare les références, equals() compare le contenu"
+Programmation,"En JavaScript, que renvoie typeof null ?","""null""","""undefined""","""object""","""number""",Option_C,"Bug historique du langage : typeof null renvoie ""object"""
+Programmation,"En SQL, quelle clause filtre les résultats après un GROUP BY ?",HAVING,WHERE,FILTER,LIMIT,Option_A,"HAVING filtre les groupes, WHERE filtre les lignes avant le groupement"
+Programmation,"En SQL, quel JOIN garde toutes les lignes de la table de gauche ?",INNER JOIN,LEFT JOIN,RIGHT JOIN,CROSS JOIN,Option_B,"LEFT JOIN garde toute la table de gauche, avec NULL s'il n'y a pas de correspondance"
+Programmation,"En PHP, quel opérateur compare la valeur ET le type ?",===,==,=,!=,Option_A,"=== vérifie la valeur et le type, == convertit avant de comparer"
+Programmation,"Avec Git, quelle commande annule un commit sans réécrire l'historique ?",git reset --hard,git rebase,git clean,git revert,Option_D,git revert crée un nouveau commit qui annule l'ancien
+Programmation,Quelle est la complexité d'une recherche dichotomique dans un tableau trié ?,O(n),O(n²),O(log n),O(1),Option_C,On divise l'espace de recherche par 2 à chaque étape donc O(log n)
+Programmation,Quel code HTTP signifie « authentification requise » ?,400,401,403,404,Option_B,"401 demande une authentification"
