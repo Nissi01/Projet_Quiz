@@ -1,0 +1,29 @@
+.bulles {
+    justify-content: center;
+    margin-top: 8px;
+}
+
+
+button.bulle.choisie,
+button.bulle.choisie:hover:not(:disabled) {
+    background: var(--bonne);
+    border-color: var(--bonne);
+    color: #fff;
+}
+
+
+.nombre-questions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+}
+
+.nombre-questions input[type="range"] {
+    width: 260px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    accent-color: var(--bonne);
+}
