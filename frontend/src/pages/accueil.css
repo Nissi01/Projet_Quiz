@@ -1,0 +1,20 @@
+/* Réponse choisie (avant la correction) */
+button.reponse.choisie,
+button.reponse.choisie:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--accent-texte);
+    border-color: var(--accent);
+}
+
+/* Liste déroulante des matières, même style que les champs */
+.choix-matiere {
+    display: block;
+    margin: 24px auto 0;
+    min-width: 260px;
+    padding: 12px 14px;
+    border: 1px solid var(--bordure);
+    border-radius: 8px;
+    background: var(--champ);
+    color: var(--texte);
+    font: inherit;
+}

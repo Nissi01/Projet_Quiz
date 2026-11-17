@@ -19,7 +19,7 @@ function ForumThread() {
       .catch((e) => setError(e.message));
   }, [id]);
 
-  // A ADAPTER avec UserDtos.UserView : champ du rôle
+  
   const estAdmin = String(me?.role ?? "").toLowerCase().includes("admin");
   const peutSupprimer = me && thread && (me.id === thread.userId || estAdmin);
 
