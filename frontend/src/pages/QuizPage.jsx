@@ -120,11 +120,14 @@ function QuizPage() {
             {chargement ? "Chargement..." : `Valider (${resume}, ${nbQuestions} questions)`}
           </button>
         </div>
+        <div className="suite">
+          <button onClick={()=>setCreation(true)}>Créer un quiz</button>
+        </div>
       </div>
     );
   }
 
-  // 3) Résultat
+  // 2) Résultat
   if (finished) {
     const parId = Object.fromEntries(quiz.questions.map((q) => [q.id, q]));
     return (
@@ -157,7 +160,7 @@ function QuizPage() {
     );
   }
 
-  // 2) Question en cours
+  // 3) Question en cours
   const question = quiz.questions[current];
   const choisie = answers[question.id];
   const derniere = current === quiz.questions.length - 1;

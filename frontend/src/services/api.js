@@ -21,5 +21,7 @@ export async function request(path, options = {}) {
     const data = await res.json().catch(() => ({}));
     throw new Error(data.error || `Erreur ${res.status}`);
   }
+  // 204 No Content (suppression, déconnexion) : pas de corps à lire
+  if (res.status === 204) return null;
   return res.json();
 }

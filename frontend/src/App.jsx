@@ -24,7 +24,6 @@ function App() {
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/quiz" element={<Protege><QuizPage /></Protege>} />
           <Route path="/forum" element={<Protege><ForumPage /></Protege>} />
-          <Route path="/forum" element={<Protege><ForumPage /></Protege>} />
           <Route path="/forum/nouveau" element={<Protege><ForumNouveau /></Protege>} />
           <Route path="/forum/:id" element={<Protege><ForumThread /></Protege>} />
           <Route path="*" element={<Navigate to="/" />} />

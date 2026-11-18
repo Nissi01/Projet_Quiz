@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router";
+import { logout } from "../services/userService.js";
 
 function themeInitial() {
   const sauve = localStorage.getItem("theme");
@@ -37,8 +38,8 @@ export default function Nav() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  function deconnexion() {
-    localStorage.removeItem("token");
+  async function deconnexion() {
+    await logout().catch(() => {});
     navigate("/");
   }
 
