@@ -1,0 +1,38 @@
+# docker compose up --build   puis ouvrir http://localhost:5173
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: studyquiz
+      POSTGRES_USER: studyquiz
+      POSTGRES_PASSWORD: studyquiz_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U studyquiz -d studyquiz"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/studyquiz
+      # Valeurs de développement (à changer hors TP)
+      JWT_SECRET: dev-only-secret-a-changer-0123456789abcdef
+      ADMIN_PASSWORD: admin-dev-a-changer
+      QUIZ_DIR: /app/Quiz
+    volumes:
+      - ./Quiz:/app/Quiz:ro
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+
+volumes:
+  postgres_data:
