@@ -18,7 +18,11 @@ public class QuizService {
         this.subjects=subjects;this.questions=questions;this.sessions=sessions;
     }
     @Transactional(readOnly=true)
-    public List<SubjectView> subjects(){return subjects.findAll().stream().map(s->new SubjectView(s.id,s.name,s.filiere.name)).toList();}
+    public List<SubjectView> subjects(){
+        Map<Long,Long> counts=new HashMap<>();
+        for(Object[] row:questions.countBySubject()) counts.put((Long)row[0],(Long)row[1]);
+        return subjects.findAll().stream().map(s->new SubjectView(s.id,s.name,s.filiere.name,counts.getOrDefault(s.id,0L))).toList();
+    }
     @Transactional
     public QuestionView createQuestion(CreateQuestionRequest request,User author){
         Subject subject=subjects.findById(request.subjectId()).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Subject not found"));

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 import java.util.*;
 public final class QuizDtos {
     private QuizDtos() {}
-    public record SubjectView(Long id,String name,String filiere) {}
+    public record SubjectView(Long id,String name,String filiere,long questionCount) {}
     public record StartQuizRequest(Long subjectId,@Min(1) @Max(50) int count) {}
     public record OptionView(String code,String label) {}
     public record QuestionView(Long id,String subject,Difficulty difficulty,String prompt,List<OptionView> options) {}

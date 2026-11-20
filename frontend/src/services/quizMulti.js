@@ -1,12 +1,19 @@
 import { startQuiz, submitQuiz } from "./quizService";
 
 
-function repartir(nb, nbSujets) {
-    const base = Math.floor(nb / nbSujets);
-    const reste = nb % nbSujets;
-    const parts = [];
-    for (let i = 0; i < nbSujets; i++) {
-        parts.push(Math.max(1, base + (i < reste ? 1 : 0)));
+function repartir(nb, stocks) {
+    const parts = stocks.map(() => 0);
+    let reste = nb;
+    let progres = true;
+    while (reste > 0 && progres) {
+        progres = false;
+        for (let i = 0; i < stocks.length && reste > 0; i++) {
+            if (parts[i] < stocks[i]) {
+                parts[i]++;
+                reste--;
+                progres = true;
+            }
+        }
     }
     return parts;
 }
@@ -20,14 +27,15 @@ function melanger(liste) {
     return copie;
 }
 
-export async function demarrerQuizMulti(ids, nb) {
+export async function demarrerQuizMulti(ids, nb, stocks = {}) {
     let sessions;
     if (ids.length === 0) {
         sessions = [await startQuiz({ subjectId: null, count: nb })];
     } else {
-        const parts = repartir(nb, ids.length);
+        const disponibles = melanger(ids).filter((id) => (stocks[id] ?? 0) > 0).slice(0, nb);
+        const parts = repartir(nb, disponibles.map((id) => stocks[id]));
         sessions = await Promise.all(
-            ids.map((id, i) => startQuiz({ subjectId: id, count: parts[i] }))
+            disponibles.map((id, i) => startQuiz({ subjectId: id, count: parts[i] }))
         );
     }
     const questions = sessions.flatMap((s) =>

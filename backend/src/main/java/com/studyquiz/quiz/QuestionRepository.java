@@ -8,6 +8,8 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
     List<Question> withOptions(@Param("ids") Collection<Long> ids);
     @Query("select q.id from Question q where (:subjectId is null or q.subject.id = :subjectId)")
     List<Long> findIds(@Param("subjectId") Long subjectId);
+    @Query("select q.subject.id, count(q) from Question q group by q.subject.id")
+    List<Object[]> countBySubject();
     @EntityGraph(attributePaths="subject")
     List<Question> findByCreatedByIdOrderByIdDesc(Long userId);
 }

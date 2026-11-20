@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import { getSubjects } from "../services/quizService";
 import { demarrerQuizMulti, terminerQuizMulti } from "../services/quizMulti";
-import CreerQuestion from "../components/CreerQuestion";
+import CreerQuiz from "../components/CreerQuiz";
 import "./QuizPage.css";
 
-const MIN_QUESTIONS = 5;
-const MAX_QUESTIONS = 15;
+const MIN_QUESTIONS = 1;
+const DEFAUT_QUESTIONS = 5;
+const MAX_QUESTIONS = 50;
 function QuizPage() {
   const [subjects, setSubjects] = useState([]);
   const [choisis, setChoisis] = useState([]);  
@@ -17,13 +19,24 @@ function QuizPage() {
   const [error, setError] = useState("");
   const [creation, setCreation] = useState(false);
   const [chargement, setChargement] = useState(false);
-  const [nbQuestions, setNbQuestions] = useState(MIN_QUESTIONS);
+  const [nbQuestions, setNbQuestions] = useState(DEFAUT_QUESTIONS);
+  const location = useLocation();
+
+  useEffect(() => {
+    setCreation(false);
+  }, [location.key]);
 
   useEffect(() => {
     getSubjects().then(setSubjects).catch((e) => setError(e.message));
   }, []);
 
  
+  const disponibles = subjects
+    .filter((s) => choisis.length === 0 || choisis.includes(s.id))
+    .reduce((total, s) => total + s.questionCount, 0);
+  const maxQuestions = Math.max(MIN_QUESTIONS, Math.min(MAX_QUESTIONS, disponibles));
+  const nb = Math.min(nbQuestions, maxQuestions);
+
   function basculer(id) {
     if (choisis.includes(id)) {
       setChoisis(choisis.filter((x) => x !== id));
@@ -36,7 +49,7 @@ function QuizPage() {
     setError("");
     setChargement(true);
     try {
-      const q = await demarrerQuizMulti(choisis, nbQuestions);
+      const q = await demarrerQuizMulti(choisis, nb, Object.fromEntries(subjects.map((s) => [s.id, s.questionCount])));
       setQuiz(q);
       setCurrent(0);
       setAnswers({});
@@ -78,7 +91,13 @@ function QuizPage() {
   }
 
   if (creation) {
-    return <CreerQuestion subjects={subjects} onRetour={() => setCreation(false)} />;
+    return (
+      <CreerQuiz
+        subjects={subjects}
+        onRetour={() => setCreation(false)}
+        onCree={() => getSubjects().then(setSubjects).catch((e) => setError(e.message))}
+      />
+    );
   }
 
   // 1) Choix des sujets
@@ -102,22 +121,22 @@ function QuizPage() {
             <button key={s.id}
               className={"bulle" + (choisis.includes(s.id) ? " choisie" : "")}
               onClick={() => basculer(s.id)}>
-              {s.name}{s.filiere !== s.name && ` (${s.filiere})`}
+              {s.name} ({s.questionCount}){s.filiere !== s.name && ` · ${s.filiere}`}
             </button>
           ))}
         </div>
 
         <div className="nombre-questions">
-          <label htmlFor="nb">Nombre de questions : <strong>{nbQuestions}</strong></label>
+          <label htmlFor="nb">Nombre de questions : <strong>{nb}</strong></label>
           <input id="nb" type="range"
-            min={MIN_QUESTIONS} max={MAX_QUESTIONS}
-            value={nbQuestions}
+            min={MIN_QUESTIONS} max={maxQuestions}
+            value={nb}
             onChange={(e) => setNbQuestions(Number(e.target.value))} />
         </div>
 
         <div className="suite">
           <button onClick={commencer} disabled={chargement}>
-            {chargement ? "Chargement..." : `Valider (${resume}, ${nbQuestions} questions)`}
+            {chargement ? "Chargement..." : `Valider (${resume}, ${nb} question${nb > 1 ? "s" : ""})`}
           </button>
         </div>
         <div className="suite">
